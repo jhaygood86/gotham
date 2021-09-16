@@ -1,0 +1,47 @@
+app-id: io.github.jhaygood86.gotham
+runtime: io.elementary.Platform
+runtime-version: '6'
+sdk: io.elementary.Sdk
+command: io.github.jhaygood86.gotham
+finish-args:
+  - '--device=dri'
+  - '--share=ipc'
+  - '--socket=fallback-x11'
+  - '--socket=wayland'
+  - '--filesystem=xdg-data/flatpak/repo:ro'
+  - '--filesystem=xdg-data/flatpak/app:ro'
+  - '--filesystem=xdg-data/flatpak/exports/share:ro'
+  - '--filesystem=xdg-data/flatpak/overrides:rw'
+    # Needed for prefer-color-scheme
+  - '--system-talk-name=org.freedesktop.Accounts'
+  
+cleanup:
+- '/include'
+- '/lib/pkgconfig'
+- '/share/vala'
+- '*.a'
+- '*.la'
+  
+modules:
+  - name: appstream-glib
+    buildsystem: meson
+    config-opts:
+    - '-Ddep11=false'
+    - '-Dbuilder=false'
+    - '-Drpm=false'
+    - '-Dalpm=false'
+    - '-Dfonts=false'
+    - '-Dstemmer=false'
+    - '-Dman=false'
+    - '-Dgtk-doc=false'
+    - '-Dintrospection=true'
+    sources:
+    - type: archive
+      url: https://github.com/hughsie/appstream-glib/archive/appstream_glib_0_7_18.tar.gz
+      sha256: 73b8c10273c4cdd8f6de03c2524fedad64e34ccae08ee847dba804bb15461f6e
+      
+  - name: gotham
+    buildsystem: meson
+    sources:
+    - type: dir
+      path: .

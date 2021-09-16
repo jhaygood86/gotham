@@ -1,0 +1,103 @@
+/*
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2021 Justin Haygood <jhaygood86@gmail.com>
+ */
+
+public class AppModel : Object {
+    public string id { get; construct; }
+    public string name { get; private set; }
+    public bool is_appcenter { get; private set;}
+    
+    private AppModel (string id) {
+        Object(id : id);
+        
+        load_app_data ();
+    }
+    
+    private void load_app_data () {
+        var path = Path.build_filename(
+                    get_bundle_path(),
+                    "files",
+                    "share",
+                    "appdata",
+                    "%s.appdata.xml".printf(id));
+                    
+        var file = File.new_for_path(path);
+        
+        if (file.query_exists ()) {
+            var app = new As.App ();
+            app.parse_file(path, As.AppParseFlags.NONE);
+            name = app.get_name (null);
+        } else {
+            name = id;
+        }
+        
+        var origin_path = Path.build_filename(
+                            get_flatpak_directory(),
+                            "repo",
+                            "refs",
+                            "remotes",
+                            "appcenter",
+                            "app",
+                            id);
+                            
+        var origin_dir = File.new_for_path(origin_path);
+        
+        is_appcenter = false;
+        
+        if (origin_dir.query_exists()){
+            is_appcenter = true;
+        }
+    }
+
+    private string get_bundle_path () {
+        var flatpak_directory = get_flatpak_directory ();
+        
+        return Path.build_filename(flatpak_directory,"app",id,"current","active");
+    }
+    
+    private static string get_flatpak_directory () {
+        var flatpak_user_dir = Environment.get_variable("FLATPAK_USER_DIR");
+        
+        if (flatpak_user_dir == null) {
+            var user_dir = Environment.get_variable("HOST_XDG_DATA_HOME");
+            
+            if(user_dir == null) {
+                user_dir = Path.build_filename(Environment.get_home_dir(),".local","share");
+            }
+            
+            flatpak_user_dir = Path.build_filename(user_dir,"flatpak");
+        }
+        
+        return flatpak_user_dir;
+    }
+    
+    public static Gee.List<AppModel> list_apps () {
+        var apps = new Gee.ArrayList<AppModel> ();
+        
+        var flatpak_user_dir = get_flatpak_directory ();
+        var flatpak_app_dir = Path.build_filename(flatpak_user_dir,"app");
+        
+        var flatpak_directory = File.new_for_path(flatpak_app_dir);
+
+        if (flatpak_directory.query_exists ()) {
+            var flatpak_directory_children_enumerator = flatpak_directory.enumerate_children("*",FileQueryInfoFlags.NONE, null);
+            var info = flatpak_directory_children_enumerator.next_file(null);
+            
+            while (info != null) {
+                var file = flatpak_directory_children_enumerator.get_child (info);
+                var app_id = Path.get_basename(file.get_path());
+                
+                var app_model = new AppModel (app_id);
+                
+                print("adding app: %s\n",app_model.name);
+                
+                apps.add(app_model);
+                
+                info = flatpak_directory_children_enumerator.next_file(null);
+            }
+        }
+        
+        return apps;
+    }
+}

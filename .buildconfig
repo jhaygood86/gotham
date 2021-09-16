@@ -1,0 +1,11 @@
+[default]
+name=Default
+runtime=host
+toolchain=default
+config-opts=
+run-opts=
+prefix=/home/justinhaygood/.var/app/org.gnome.Builder/cache/gnome-builder/install/gotham/host
+app-id=
+postbuild=
+prebuild=
+default=true
