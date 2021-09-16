@@ -60,7 +60,7 @@ public class ApplicationRow : Gtk.ListBoxRow {
 
         add (box);
         
-         var overrides = new KeyFile ();
+        var overrides = new KeyFile ();
         
         var user_data_dir = Environment.get_user_data_dir();
         var path = Path.build_filename(user_data_dir,"flatpak","overrides",app.id);
@@ -93,9 +93,14 @@ public class ApplicationRow : Gtk.ListBoxRow {
         dark_mode_switch.notify["active"].connect(() => {
            if(dark_mode_switch.active) {
                overrides.set_string ("Environment", "GTK_THEME", "Adwaita-dark");
+               overrides.set_string ("Environment", "QT_STYLE_OVERRIDE", "Adwaita-Dark");
            } else {
                if (overrides.has_group("Environment") && overrides.has_key("Environment","GTK_THEME")) {
                    overrides.remove_key("Environment","GTK_THEME");
+               }
+
+               if (overrides.has_group("Environment") && overrides.has_key("Environment","QT_STYLE_OVERRIDE")) {
+                   overrides.remove_key("Environment","QT_STYLE_OVERRIDE");
                }
            }
            
