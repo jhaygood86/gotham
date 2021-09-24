@@ -11,7 +11,7 @@ finish-args:
   - '--filesystem=xdg-data/flatpak/repo:ro'
   - '--filesystem=xdg-data/flatpak/app:ro'
   - '--filesystem=xdg-data/flatpak/exports/share:ro'
-  - '--filesystem=xdg-data/flatpak/overrides:rw'
+  - '--filesystem=xdg-data/flatpak/overrides:create'
     # Needed for prefer-color-scheme
   - '--system-talk-name=org.freedesktop.Accounts'
   

@@ -21,15 +21,27 @@ public class ApplicationRow : Gtk.ListBoxRow {
         var app_id = app.id;
         var app_name = app.name;
         
-        var appinfo = new GLib.DesktopAppInfo (app_id + ".desktop");
+        print("desktop file path: %s\n",app.desktop_file_path);
+
+        var desktop_file = new KeyFile ();
+        desktop_file.load_from_file (app.desktop_file_path, KeyFileFlags.NONE);
+
+        var user_dir = Path.build_filename(Environment.get_home_dir(),".local","share");
+        var flatpak_dir = Path.build_filename(user_dir,"flatpak");
+        var path = Path.build_filename(flatpak_dir,"overrides",app.id);
+
+        var icon_theme = Gtk.IconTheme.get_default ();
+        icon_theme.append_search_path (app.icon_theme);
 
         Gtk.Image image;
         
-        if (appinfo != null && appinfo.get_icon () != null) {
-            image = new Gtk.Image.from_gicon (appinfo.get_icon (), Gtk.IconSize.DND);
-        } else {
-            image = new Gtk.Image.from_icon_name ("application-default-icon", Gtk.IconSize.DND);
-        }
+        var icon_name = desktop_file.get_string ("Desktop Entry","Icon");
+
+        print("icon name: %s\n",icon_name);
+
+        var icon_pixbuf = icon_theme.load_icon (icon_name, 32, Gtk.IconLookupFlags.FORCE_SIZE);
+
+        image = new Gtk.Image.from_pixbuf (icon_pixbuf);
 
         image.pixel_size = 32;
 
@@ -61,9 +73,6 @@ public class ApplicationRow : Gtk.ListBoxRow {
         add (box);
         
         var overrides = new KeyFile ();
-        
-        var user_data_dir = Environment.get_user_data_dir();
-        var path = Path.build_filename(user_data_dir,"flatpak","overrides",app.id);
         
         var file = File.new_for_path (path);
         

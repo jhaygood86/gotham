@@ -6,6 +6,8 @@
 public class AppModel : Object {
     public string id { get; construct; }
     public string name { get; private set; }
+    public string icon_theme { get; private set; }
+    public string desktop_file_path { get; private set; }
     public bool is_appcenter { get; private set;}
     
     private AppModel (string id) {
@@ -48,6 +50,19 @@ public class AppModel : Object {
         if (origin_dir.query_exists()){
             is_appcenter = true;
         }
+
+        icon_theme = Path.build_filename (
+                        get_bundle_path (),
+                        "export",
+                        "share",
+                        "icons");
+
+        desktop_file_path = Path.build_filename (
+                                get_bundle_path (),
+                                "export",
+                                "share",
+                                "applications",
+                                id + ".desktop");
     }
 
     private string get_bundle_path () {
@@ -57,18 +72,12 @@ public class AppModel : Object {
     }
     
     private static string get_flatpak_directory () {
-        var flatpak_user_dir = Environment.get_variable("FLATPAK_USER_DIR");
+        var user_dir = Path.build_filename(Environment.get_home_dir(),".local","share");
         
-        if (flatpak_user_dir == null) {
-            var user_dir = Environment.get_variable("HOST_XDG_DATA_HOME");
-            
-            if(user_dir == null) {
-                user_dir = Path.build_filename(Environment.get_home_dir(),".local","share");
-            }
-            
-            flatpak_user_dir = Path.build_filename(user_dir,"flatpak");
-        }
+        var flatpak_user_dir = Path.build_filename(user_dir,"flatpak");
         
+        print("path: %s\n", flatpak_user_dir);
+
         return flatpak_user_dir;
     }
     

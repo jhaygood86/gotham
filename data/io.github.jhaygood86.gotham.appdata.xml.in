@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.jhaygood86.mauborgne</id>
+  <id>io.github.jhaygood86.gotham</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
-  <name>Maurborgne</name>
-  <summary>2FA TOTP Code Generator</summary>
+  <name>Gotham</name>
+  <summary>Force Dark Mode</summary>
   <description>
     <p>
-      Import TOTP Pads from QR Codes and Generate OTP Codes for secure 2FA logins
+      Forces Dark Mode in non-curated apps. Works with GTK 3, GTK 4, and Qt applications.
     </p>
   </description>
   <releases>
-    <release version="0.2.0" date="2021-09-13" urgency="medium">
+    <release version="0.1.0" date="2021-09-23" urgency="medium">
       <description>
-        <p>Feature Release</p>
+        <p>Initial Release</p>
         <ul>
-          <li>Adds ability to delete pads</li>
-          <li>Improves Export QR Code Generation</li>
+          <li>Force Dark Mode in various apps</li>
         </ul>
       </description>
     </release>
   </releases>
   <provides>
-    <binary>io.github.jhaygood86.mauborgne</binary>
+    <binary>io.github.jhaygood86.gotham</binary>
   </provides>
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/jhaygood86/mauborgne/main/data/screenshot.png</image>
+      <image>https://raw.githubusercontent.com/jhaygood86/gotham/main/data/screenshot.png</image>
     </screenshot>
   </screenshots>
   <content_rating type="oars-1.1">
@@ -57,10 +56,10 @@
     <content_attribute id="money-purchasing">none</content_attribute>
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
-  <translation type="gettext">io.github.jhaygood86.mauborgne</translation>
+  <translation type="gettext">io.github.jhaygood86.gotham</translation>
   <developer_name>Justin Haygood</developer_name>
-  <url type="homepage">https://jhaygood86.github.io/mauborgne/</url>
-  <url type="bugtracker">https://github.com/jhaygood86/mauborgne/issues</url>
+  <url type="homepage">https://jhaygood86.github.io/gotham/</url>
+  <url type="bugtracker">https://github.com/jhaygood86/gotham/issues</url>
   <custom>
     <value key="x-appcenter-color-primary">#0e9a83</value>
     <value key="x-appcenter-color-primary-text">rgb(255, 255, 255)</value>
