@@ -31,6 +31,9 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
             halign = Gtk.Align.FILL
         };
 
+        unowned Gtk.StyleContext header_bar_context = header_bar.get_style_context ();
+        header_bar_context.add_class (Gtk.STYLE_CLASS_FLAT);
+
         grid = new Gtk.Grid ();
         
         var title_label = new Gtk.Label(_("Force Dark Mode"));
@@ -92,17 +95,15 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
         grid.attach (frame, 0, 0, 1, 1);
         
         var installed_apps = AppModel.list_apps ();
-        
         print("number of apps: %d\n",installed_apps.size);
-    
+
         foreach(var app in installed_apps){
-            
             print("found app: %s\n",app.name);
-            
+
             if(app.is_appcenter) {
                 continue;
             }
-            
+
             var app_row = new ApplicationRow (app);
             app_list.add(app_row);
         }
