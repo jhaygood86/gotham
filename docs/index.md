@@ -4,7 +4,7 @@ Gotham is an app for [elementary OS](https://www.elementary.io) that forces dark
 
 ### Getting Gotham
 
-Gotham is exclusively available in the elementary OS AppCenter with a suggested retail price of $5.
+Gotham is exclusively available in the elementary OS AppCenter with a suggested retail price of $3.
 
 ### Support or Contact
 
