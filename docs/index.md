@@ -1,0 +1,11 @@
+## Gotham
+
+Gotham is an app for [elementary OS](https://www.elementary.io) that forces dark mode for non-curated Flatpak apps (i.e., from flathub or elsewhere). This explicitly doesn't force dark mode on apps from the AppCenter. This also doesn't support apps installed from .deb files due to technical restrictions.
+
+### Getting Gotham
+
+Gotham is exclusively available in the elementary OS AppCenter with a suggested retail price of $3.
+
+### Support or Contact
+
+Having trouble with Gotham? Please file an issue at [https://github.com/jhaygood86/gotham/issues].
