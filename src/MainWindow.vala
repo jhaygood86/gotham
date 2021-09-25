@@ -33,6 +33,7 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
 
         unowned Gtk.StyleContext header_bar_context = header_bar.get_style_context ();
         header_bar_context.add_class (Gtk.STYLE_CLASS_FLAT);
+        header_bar_context.add_class ("default-decoration");
 
         grid = new Gtk.Grid ();
         
