@@ -34,7 +34,7 @@ flatpak run io.github.jhaygood86.gotham
 
 ### Special Thanks
 
-Mauborgne utilizes the following open source software that we would like to thank!
+Gotham utilizes the following open source software that we would like to thank!
 
  * **[elementary](https://www.elementary.io)** We are built on top of the elementary OS platform
  * **[flatpak](https://www.flatpak.org)** The future of app distribution.
