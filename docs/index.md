@@ -13,7 +13,7 @@ Gotham is exclusively distributed via a custom Flatpak remote.
 
 Gotham accepts payments directly using Stripe
 
-[Support Gotham](https://buy.stripe.com/8wMg0Ng2Z9Uf8AEfYY)
+[Support Gotham](https://buy.stripe.com/fZe29X6sp1nJ6swcMN)
 
 ### Support or Contact
 
