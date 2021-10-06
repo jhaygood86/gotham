@@ -11,6 +11,8 @@ public class GothamApp : Gtk.Application {
         );
     }
     
+    private static bool? _is_on_elementary;
+
     protected override void activate () {
         init_theme ();
 
@@ -44,7 +46,19 @@ public class GothamApp : Gtk.Application {
          }
     }
 
+    public static bool is_running_on_elementary () {
+
+        if (_is_on_elementary == null ) {
+            var os_id = Environment.get_os_info ("ID");
+            print("Running On OS: %s\n",os_id);
+            _is_on_elementary = os_id == "elementary";
+        }
+
+        return _is_on_elementary;
+    }
+
     public static int main (string[] args) {
         return new GothamApp ().run (args);
     }
+
 }

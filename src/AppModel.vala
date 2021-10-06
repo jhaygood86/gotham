@@ -109,4 +109,9 @@ public class AppModel : Object {
         
         return apps;
     }
+
+    public bool is_app_valid () {
+        var desktop_file = File.new_for_path (desktop_file_path);
+        return desktop_file.query_exists ();
+    }
 }

@@ -40,16 +40,24 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
         title_label.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
         title_label.margin_top = 10;
         
-        var subtitle_label = new Gtk.Label(_("Showing Non-Curated Apps Only"));
-        subtitle_label.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
-        subtitle_label.margin_top = 10;
+        Gtk.Label subtitle_label;
+
+        if(GothamApp.is_running_on_elementary ()) {
+            subtitle_label = new Gtk.Label(_("Showing Non-Curated Apps Only"));
+            subtitle_label.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
+            subtitle_label.margin_top = 10;
+        }
         
         var disclaimer_label = new Gtk.Label(_("Not every app supports forcing dark mode"));
 
         var window_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
         window_box.add(header_bar);
         window_box.add(title_label);
-        window_box.add(subtitle_label);
+
+        if (GothamApp.is_running_on_elementary ()) {
+            window_box.add(subtitle_label);
+        }
+
         window_box.add(disclaimer_label);
         window_box.add(grid);
 
@@ -100,12 +108,15 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
         foreach(var app in installed_apps){
             print("found app: %s\n",app.name);
 
-            if(app.is_appcenter) {
+            if(GothamApp.is_running_on_elementary () && app.is_appcenter) {
                 continue;
             }
 
-            var app_row = new ApplicationRow (app);
-            app_list.add(app_row);
+            if (app.is_app_valid ()) {
+                var app_row = new ApplicationRow (app);
+                app_list.add(app_row);
+            }
+
         }
     }
     
