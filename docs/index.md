@@ -6,7 +6,7 @@ Gotham is an app for [elementary OS](https://www.elementary.io) that forces dark
 
 Gotham is exclusively distributed via a custom Flatpak remote.
 
-<a href=“gotham.flatpakref”><button>Install Flatpak</button></a>
+[Install Gotham](http://jhaygood86.github.io/gotham/gotham.flatpakref)
 
 ### Support or Contact
 
