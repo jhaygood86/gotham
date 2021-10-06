@@ -60,6 +60,7 @@
   <developer_name>Justin Haygood</developer_name>
   <url type="homepage">https://jhaygood86.github.io/gotham/</url>
   <url type="bugtracker">https://github.com/jhaygood86/gotham/issues</url>
+  <url type="donation">https://buy.stripe.com/fZe29X6sp1nJ6swcMN</url>
   <custom>
     <value key="x-appcenter-color-primary">#0e9a83</value>
     <value key="x-appcenter-color-primary-text">rgb(255, 255, 255)</value>
