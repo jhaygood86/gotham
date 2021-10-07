@@ -73,17 +73,11 @@ public class AppModel : Object {
     
     private static string get_flatpak_directory () {
         var user_dir = Path.build_filename(Environment.get_home_dir(),".local","share");
-        
         var flatpak_user_dir = Path.build_filename(user_dir,"flatpak");
-        
-        print("path: %s\n", flatpak_user_dir);
-
         return flatpak_user_dir;
     }
     
-    public static Gee.List<AppModel> list_apps () {
-        var apps = new Gee.ArrayList<AppModel> ();
-        
+    public static void populate_app_list_store (GLib.ListStore apps) {
         var flatpak_user_dir = get_flatpak_directory ();
         var flatpak_app_dir = Path.build_filename(flatpak_user_dir,"app");
         
@@ -99,15 +93,15 @@ public class AppModel : Object {
                 
                 var app_model = new AppModel (app_id);
                 
-                print("adding app: %s\n",app_model.name);
+                var is_appcenter_app = GothamApp.is_running_on_elementary () && app_model.is_appcenter;
                 
-                apps.add(app_model);
-                
+                if(!is_appcenter_app && app_model.is_app_valid ()) {
+                    apps.append(app_model);
+                }
+
                 info = flatpak_directory_children_enumerator.next_file(null);
             }
         }
-        
-        return apps;
     }
 
     public bool is_app_valid () {

@@ -18,6 +18,7 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
 
     Hdy.HeaderBar header_bar;
     Gtk.Grid grid;
+    GLib.ListStore app_list_store;
 
     construct {
         height_request = 800;
@@ -66,13 +67,13 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
 
         grid.visible = true;
         
-        var placeholder_title = new Gtk.Label (_("No Flatpak apps installed")) {
+        var placeholder_title = new Gtk.Label (_("Loading Available Flatpak Applications")) {
             xalign = 0
         };
         
         placeholder_title.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
 
-        var placeholder_description = new Gtk.Label (_("Apps whose style can be adjusted will automatically appear here when installed")) {
+        var placeholder_description = new Gtk.Label (_("Apps whose style can be adjusted will appear here")) {
             wrap = true,
             xalign = 0
         };
@@ -80,18 +81,24 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
         var placeholder = new Gtk.Grid () {
             margin = 12,
             row_spacing = 3,
-            valign = Gtk.Align.CENTER
+            valign = Gtk.Align.CENTER,
+            hexpand = true
         };
         
         placeholder.attach (placeholder_title, 0, 0);
         placeholder.attach (placeholder_description, 0, 1);
         placeholder.show_all ();
         
+        app_list_store = new GLib.ListStore(typeof(AppModel));
+
         var app_list = new Gtk.ListBox ();
         app_list.vexpand = true;
         app_list.selection_mode = Gtk.SelectionMode.NONE;
         app_list.set_placeholder (placeholder);
         app_list.set_sort_func ((Gtk.ListBoxSortFunc) sort_func);
+        app_list.bind_model (app_list_store, (item) => {
+            return new ApplicationRow((AppModel)item);
+        });
         
         var scrolled_window = new Gtk.ScrolledWindow (null, null);
         scrolled_window.add (app_list);
@@ -103,22 +110,11 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
         
         grid.attach (frame, 0, 0, 1, 1);
         
-        var installed_apps = AppModel.list_apps ();
-        print("number of apps: %d\n",installed_apps.size);
+        Timeout.add_seconds(1,() => {
+            AppModel.populate_app_list_store (app_list_store);
+            return Source.REMOVE;
+        });
 
-        foreach(var app in installed_apps){
-            print("found app: %s\n",app.name);
-
-            if(GothamApp.is_running_on_elementary () && app.is_appcenter) {
-                continue;
-            }
-
-            if (app.is_app_valid ()) {
-                var app_row = new ApplicationRow (app);
-                app_list.add(app_row);
-            }
-
-        }
     }
     
     [CCode (instance_pos = -1)]

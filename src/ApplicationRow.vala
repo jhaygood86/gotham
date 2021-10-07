@@ -20,8 +20,6 @@ public class ApplicationRow : Gtk.ListBoxRow {
         
         var app_id = app.id;
         var app_name = app.name;
-        
-        print("desktop file path: %s\n",app.desktop_file_path);
 
         var desktop_file = new KeyFile ();
         desktop_file.load_from_file (app.desktop_file_path, KeyFileFlags.NONE);
@@ -36,8 +34,6 @@ public class ApplicationRow : Gtk.ListBoxRow {
         Gtk.Image image;
         
         var icon_name = desktop_file.get_string ("Desktop Entry","Icon");
-
-        print("icon name: %s\n",icon_name);
 
         var icon_pixbuf = icon_theme.load_icon (icon_name, 32, Gtk.IconLookupFlags.FORCE_SIZE);
 
@@ -84,8 +80,6 @@ public class ApplicationRow : Gtk.ListBoxRow {
             if (overrides.has_group("Environment") && overrides.has_key("Environment","GTK_THEME")) {
                 var selected_theme = overrides.get_string("Environment","GTK_THEME");
 
-                print("theme: %s",selected_theme);
-
                 if (selected_theme == "Adwaita:dark" || selected_theme == "Adwaita-dark") {
                     dark_mode_switch.active = true;
                 }
@@ -115,5 +109,7 @@ public class ApplicationRow : Gtk.ListBoxRow {
            
            overrides.save_to_file(path);
         });
+
+        show_all ();
     }
 }
