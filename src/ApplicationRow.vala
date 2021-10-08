@@ -19,7 +19,6 @@ public class ApplicationRow : Gtk.ListBoxRow {
         margin_left = 20;
         
         var app_id = app.id;
-        var app_name = app.name;
 
         var desktop_file = new KeyFile ();
         desktop_file.load_from_file (app.desktop_file_path, KeyFileFlags.NONE);
@@ -30,23 +29,21 @@ public class ApplicationRow : Gtk.ListBoxRow {
 
         var icon_theme = Gtk.IconTheme.get_default ();
         icon_theme.append_search_path (app.icon_theme);
-
-        Gtk.Image image;
         
         var icon_name = desktop_file.get_string ("Desktop Entry","Icon");
 
-        var icon_pixbuf = icon_theme.load_icon (icon_name, 32, Gtk.IconLookupFlags.FORCE_SIZE);
-
-        image = new Gtk.Image.from_pixbuf (icon_pixbuf);
+        var image = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.DND);
 
         image.pixel_size = 32;
 
-        var title_label = new Gtk.Label (app_name) {
+        var title_label = new Gtk.Label (null) {
             ellipsize = Pango.EllipsizeMode.END,
             valign = Gtk.Align.END,
             xalign = 0
         };
         
+        app.bind_property ("name", title_label, "label", BindingFlags.SYNC_CREATE);
+
         title_label.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
 
         dark_mode_switch = new Gtk.Switch() {
@@ -74,7 +71,7 @@ public class ApplicationRow : Gtk.ListBoxRow {
         
         dark_mode_switch.active = false;
         
-        if (file.query_exists()){
+        try {
             overrides.load_from_file(path, KeyFileFlags.NONE);
         
             if (overrides.has_group("Environment") && overrides.has_key("Environment","GTK_THEME")) {
@@ -85,7 +82,8 @@ public class ApplicationRow : Gtk.ListBoxRow {
                 }
                 
             }
-        
+        } catch (Error e){
+            warning("cannot find overrides file: %s",path);
         }
         
 

@@ -110,10 +110,7 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
         
         grid.attach (frame, 0, 0, 1, 1);
         
-        Timeout.add_seconds(1,() => {
-            AppModel.populate_app_list_store (app_list_store);
-            return Source.REMOVE;
-        });
+        AppModel.populate_app_list_store.begin (app_list_store);
 
     }
     
