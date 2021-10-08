@@ -95,7 +95,7 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
         app_list.vexpand = true;
         app_list.selection_mode = Gtk.SelectionMode.NONE;
         app_list.set_placeholder (placeholder);
-        app_list.set_sort_func ((Gtk.ListBoxSortFunc) sort_func);
+
         app_list.bind_model (app_list_store, (item) => {
             return new ApplicationRow((AppModel)item);
         });
@@ -110,13 +110,13 @@ public class Gotham.MainWindow : Hdy.ApplicationWindow {
         
         grid.attach (frame, 0, 0, 1, 1);
         
-        AppModel.populate_app_list_store.begin (app_list_store);
+        AppModel.populate_app_list_store.begin (app_list_store, (CompareDataFunc<Object>)sort_func);
 
     }
     
     [CCode (instance_pos = -1)]
-    private int sort_func (ApplicationRow row1, ApplicationRow row2) {
-        return row1.app.name.collate (row2.app.name);
+    private int sort_func (AppModel row1, AppModel row2) {
+        return row1.name.collate(row2.name);
     }
 }
 

@@ -68,7 +68,7 @@ public class AppModel : Object {
         return flatpak_user_dir;
     }
     
-    public static async void populate_app_list_store (GLib.ListStore apps) {
+    public static async void populate_app_list_store (GLib.ListStore apps, CompareDataFunc<Object> compare_func) {
         var flatpak_user_dir = get_flatpak_directory ();
         var flatpak_app_dir = Path.build_filename(flatpak_user_dir,"app");
         
@@ -90,7 +90,7 @@ public class AppModel : Object {
                 var is_appcenter_app = GothamApp.is_running_on_elementary () && yield app_model.is_on_appcenter ();
                 
                 if(!is_appcenter_app && yield app_model.is_app_valid ()) {
-                    apps.append(app_model);
+                    apps.insert_sorted(app_model, compare_func);
                 }
             }
         }
